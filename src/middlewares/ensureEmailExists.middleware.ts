@@ -18,7 +18,7 @@ const ensureEmailExists = async (req: Request, resp: Response, next: NextFunctio
 
     if(verifyingEmail){
         if(getEmail){
-            throw new AppError("Movie already exists.", 409)
+            throw new AppError("Email already exists.", 409)
         }
     }
 
