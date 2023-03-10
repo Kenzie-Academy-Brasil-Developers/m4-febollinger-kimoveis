@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import listUsersService from "../../services/users/listUsers.service";
 
 const listUsersController = async (req: Request, resp: Response) => {
-
+    
     const getUsers = await listUsersService()
 
 

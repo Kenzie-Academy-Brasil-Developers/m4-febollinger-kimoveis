@@ -6,8 +6,8 @@ import Address from "./addresses.entity";
 
 export {
     User,
-    Schedule,
-    RealEstate,
     Category,
-    Address
+    Address,
+    RealEstate,
+    Schedule
 }

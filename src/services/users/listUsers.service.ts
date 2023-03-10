@@ -8,7 +8,7 @@ import { returnAllUsersSchema } from "../../schemas/users/users.schema";
 const listUsersService = async (): Promise<iAllUsersReturn> => {
     const userRepository: Repository<User> = AppDataSource.getRepository(User)
 
-    const findUsers = await userRepository.find()
+    const findUsers: User[] = await userRepository.find()
 
     const returningAll = returnAllUsersSchema.parse(findUsers)
 

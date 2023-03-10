@@ -1,10 +1,13 @@
 import { Request, Response } from "express";
-import { iUserCreate } from "../../interfaces/users/users.interface";
+import { DeepPartial } from 'typeorm';
+
 import createUserService from "../../services/users/createUser.service";
+import { User } from "../../entities";
+import { iUserCreate } from "../../interfaces/users/users.interface";
 
-const createUserController = async (req: Request, resp: Response) => {
+const createUserController = async (req: Request, resp: Response): Promise<Response> => {
 
-    const data: iUserCreate = req.body 
+    const data: DeepPartial<User> = req.body 
 
     const creating = await createUserService(data)
 
