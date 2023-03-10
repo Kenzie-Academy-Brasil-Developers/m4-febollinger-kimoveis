@@ -1,14 +1,16 @@
 import { NextFunction, Request, Response } from "express";
 
-const ensureIsOnlyAdmin = (req: Request, resp: Response, next: NextFunction) => {
+import { AppError } from "../errors";
 
-  if (req.users.admin === true) {
-    return next();
+const ensureIsAdmin = (req: Request, resp: Response, next: NextFunction) => {
+   
+  const verifyingIsAdmin = req.users.admin
+
+  if(!verifyingIsAdmin){
+    throw new AppError('Insufficient permission', 403)
   }
 
-  return resp.status(401).json({
-    message: "You must to be the admin.",
-  });
+  next();
 }
 
-export {ensureIsOnlyAdmin}
+export {ensureIsAdmin}

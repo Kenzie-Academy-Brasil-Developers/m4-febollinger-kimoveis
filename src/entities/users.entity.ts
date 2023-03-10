@@ -19,24 +19,24 @@ class User{
     @Column({type: 'varchar', length:120})
     password: string
 
-    @CreateDateColumn()
+    @CreateDateColumn({type: 'date'})
     createdAt: string
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({type: 'date'})
     updatedAt: string
 
-    @DeleteDateColumn()
+    @DeleteDateColumn({type: 'date'})
     deletedAt: string
 
-    @OneToMany(() => Schedule, (schedules) => schedules.user)
-    schedules:Schedule[]
+    @OneToMany(()=> Schedule, (schedule) => schedule.user)
+    schedules: Schedule[]
 
     @BeforeInsert()
     @BeforeUpdate()
     hashPassword(){
         const isHashed = getRounds(this.password)
         if(!isHashed){
-            this.password = hashSync(this.password, 10)
+            this.password = hashSync(this.password, 9)
         }
     }
     

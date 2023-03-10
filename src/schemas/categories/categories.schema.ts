@@ -1,14 +1,17 @@
 import {z} from "zod";
 
-const crateCategorySchema = z.object({
+const createCategorySchema = z.object({
     name: z.string()
 })
 
-const returnCreatedCategory = crateCategorySchema.extend({
+const returnCreatedCategorySchema = createCategorySchema.extend({
     id: z.number()
 })
 
+const returnCategoriesArray = returnCreatedCategorySchema.array()
+
 export { 
-    crateCategorySchema,
-    returnCreatedCategory
+    createCategorySchema,
+    returnCreatedCategorySchema,
+    returnCategoriesArray
 }

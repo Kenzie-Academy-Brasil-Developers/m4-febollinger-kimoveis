@@ -1,24 +1,37 @@
 import { NextFunction, Request, Response } from "express";
+import { verify } from "jsonwebtoken";
+import { AppError } from "../errors";
 
 
-const ensureIsAdminOrUserLogged = async (req: Request, resp: Response, next: NextFunction) => {
+const ensureIsUser = async (req: Request, resp: Response, next: NextFunction) => {
 
-const idUser = Number(req.params.id);
+  const authToken: string | undefined= req.headers.authorization
 
-  if (idUser === req.users.id) {
-    return next();
+  if (!authToken) {
+    throw new AppError("Missing bearer token", 401);
   }
 
-  if (req.users.admin === true) {
-    return next();
-  }
+  const token = authToken.split(" ")[1];
 
-  return resp.status(401).json({
-    message: "You must be the account owner or adm to update this account.",
+  verify(token, process.env.SECRET_KEY!, (error, decoded: any) => {
+    if (error) throw new AppError(error.message, 401);
   });
 
+  next();
+}
+
+const ensureIsUserOrAdmin = async (req: Request, resp: Response, next: NextFunction) => {
+
+  const authUser = req.users
+
+  if(authUser.admin !== true && authUser.id !== Number(req.params.id)){
+    throw new AppError('Insufficient permission', 403)
+  }
+
+  next();
 }
 
 export {
-    ensureIsAdminOrUserLogged
+  ensureIsUser,
+  ensureIsUserOrAdmin
 }

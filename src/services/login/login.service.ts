@@ -1,40 +1,39 @@
 import { compareSync } from "bcryptjs";
-import {Repository} from "typeorm";
+import 'dotenv/config'
+import {Repository, DeepPartial} from "typeorm";
 import jwt from 'jsonwebtoken'
 
 import { AppDataSource } from "../../data-source";
 import { User } from "../../entities";
 import { AppError } from "../../errors";
-import { iCreateLogin } from "../../interfaces/login/login.interface";
+import { iCreateLogin, iToken } from "../../interfaces/login/login.interface";
 
-const createLoginService = async (bodyData: iCreateLogin) => {
+const createLoginService = async (bodyData: iCreateLogin): Promise<iToken | string> => {
     const userRepository: Repository<User> = AppDataSource.getRepository(User)
 
-    const findUser: User | null = await userRepository.findOneBy({
-        email: bodyData.email
-    })
+    const verifyingUser: User | null = await userRepository.findOne({
+        where: { email: bodyData.email },
+      });
 
-    if(!findUser){
-        throw new AppError('Wrong email or password', 401)
-    }
-console.log(findUser.password)
-console.log(bodyData.password)
-    const passwordMatch: boolean = compareSync(bodyData.password, findUser.password)
-    console.log(findUser.password)
-console.log(bodyData.password)
+    if (!verifyingUser) {
+        throw new AppError("Invalid credentials", 401);
+      }
+
+    const passwordMatch: boolean = compareSync(bodyData.password, verifyingUser.password!)
+
 
     if(!passwordMatch){
-        throw new AppError('Wrong email or password', 401)
+        throw new AppError("Invalid credentials", 401)
     }
 
     const token: string = jwt.sign(
         {
-            admin: findUser.admin
+            admin: verifyingUser.admin
         },
         process.env.SECRET_KEY!,
         {
             expiresIn: process.env.EXPIRES_IN,
-            subject: findUser.id.toString()
+            subject: verifyingUser.id!.toString()
         }
     )
 

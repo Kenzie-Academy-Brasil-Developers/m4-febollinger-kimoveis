@@ -1,13 +1,16 @@
-import {ensureEmailExists} from "./ensureEmailExists.middleware";
 import {ensureDataIsValid} from "./ensureDataIsValid.middleware";
-import { ensureIsAdminOrUserLogged } from "./ensureIsAdminOrUserLogged.middleware";
+import { ensureIsUser, ensureIsUserOrAdmin } from "./ensureIsAdminOrUserLogged.middleware";
 import { ensureTokenIsValid } from "./ensureTokenIsValild.middleware";
-import { ensureIsOnlyAdmin } from "./ensureIsOnlyAdmin.middleware";
+import { ensureIsAdmin } from "./ensureIsOnlyAdmin.middleware";
+import { ensureUserExist } from "./ensureUserExist.middleware";
+import { ensureEmailExist } from "./ensureEmailExist.middleware";
 
 export {
-    ensureEmailExists,
     ensureDataIsValid,
-    ensureIsAdminOrUserLogged,
+    ensureIsUser,
     ensureTokenIsValid,
-    ensureIsOnlyAdmin
+    ensureIsAdmin,
+    ensureIsUserOrAdmin,
+    ensureUserExist,
+    ensureEmailExist
 }

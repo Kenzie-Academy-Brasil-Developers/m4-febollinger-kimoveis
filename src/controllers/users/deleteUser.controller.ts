@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import deleteuserService from "../../services/users/deleteUser.service";
 
-const deleteUserController = async (req: Request, resp: Response) =>{
+const deleteUserController = async (req: Request, resp: Response): Promise<Response> =>{
 
     const userId: number = Number(req.params.id)
 
